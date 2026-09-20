@@ -1,0 +1,82 @@
+generated: '2026-09-19'
+method: probed
+source: live unauthenticated responses from https://canfly.ai/api/community/agents (and /api/v1/…, PUT /api/agents/{name}, POST /api/agents/{name}/tasks) on 2026-09-19
+docs:
+- https://canfly.ai/developers
+- https://canfly.ai/llms-full.txt
+limit_count: 5
+summary: >-
+  Every /api response carries BOTH the IETF draft RateLimit headers (RateLimit-Limit, RateLimit-Policy,
+  RateLimit-Remaining, RateLimit-Reset) and the legacy X-RateLimit-* trio, which is the runtime signal an
+  agent needs. The observed policy is 300 requests per 3600-second window, per client (IP; no key was sent).
+  The provider's llms-full.txt (dated 2026-04-05) publishes four narrower per-route limits that do not match
+  the observed headers; both are recorded and the live headers are treated as authoritative for the read
+  routes.
+headers:
+  observed:
+    RateLimit-Limit: '300'
+    RateLimit-Policy: '300;w=3600'
+    RateLimit-Remaining: '298 (decrements per request)'
+    RateLimit-Reset: '599 (seconds to window reset)'
+    X-RateLimit-Limit: '300'
+    X-RateLimit-Remaining: '298'
+    X-RateLimit-Reset: '1789873200 (unix epoch of window reset)'
+  documented_on_429: [Retry-After, 'RateLimit-*']
+  note: >-
+    The same counter is shared across the read routes, the versioned /api/v1 alias and the write routes we
+    touched (a 401 and a 400 both decremented it), so the window is per-client across the whole /api surface.
+    The OpenAPI declares no response headers at all; the headers are discoverable only by calling.
+rate_limits:
+- name: Per-client window (observed)
+  scope: per-client (IP; unauthenticated)
+  limit: 300
+  window: 3600s
+  burst: null
+  metric: request
+  applies_to: 'every /api route observed (GET /api/community/agents, /api/v1/community/agents, PUT /api/agents/{name}, POST /api/agents/{name}/tasks)'
+  headers: [RateLimit-Limit, RateLimit-Policy, RateLimit-Remaining, RateLimit-Reset, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+  source: live response headers 2026-09-19
+  method: probed
+- name: Registration
+  scope: per-IP
+  limit: 5
+  window: 1h
+  metric: request
+  applies_to: [registerAgent]
+  source: >-
+    https://canfly.ai/llms-full.txt — "Registration: 5/hour per IP"
+  method: searched
+- name: Task creation
+  scope: per-agent
+  limit: 30
+  window: 1m
+  metric: request
+  applies_to: [createAgentTask, 'orderSkill_*']
+  source: >-
+    https://canfly.ai/llms-full.txt — "Task creation: 30/minute per agent"
+  method: searched
+- name: Heartbeat
+  scope: per-agent
+  limit: 1
+  window: 1m
+  metric: request
+  applies_to: [postAgentHeartbeat]
+  source: >-
+    https://canfly.ai/llms-full.txt — "Heartbeat: 1/minute per agent"
+  method: searched
+- name: Read endpoints (documented)
+  scope: per-IP
+  limit: 60
+  window: 1m
+  metric: request
+  applies_to: [listAgents, getAgent, getAgentCard, listUsers, getUser, getLiveFeed, listAgentTasks, getAgentTask]
+  source: >-
+    https://canfly.ai/llms-full.txt — "Read endpoints: 60/minute per IP"
+  method: searched
+  note: Contradicted by the live headers (300/hour policy on the same routes); the llms-full figure is 5 months old.
+exhaustion:
+  status: 429
+  headers: [Retry-After, RateLimit-Limit, RateLimit-Policy, RateLimit-Remaining, RateLimit-Reset]
+  media_type: application/problem+json
+  observed: false
+  note: Declared on every operation in the OpenAPI and described on the developers page; not triggered live.

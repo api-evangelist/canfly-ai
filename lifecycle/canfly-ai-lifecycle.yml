@@ -1,0 +1,58 @@
+generated: '2026-09-19'
+method: searched
+source: https://canfly.ai/developers
+derived_from: openapi/canfly-ai-openapi.yml
+docs:
+- https://canfly.ai/developers
+- https://canfly.ai/api
+- https://canfly.ai/api/openapi.json
+versioning:
+  scheme: URL prefix /api/v{n}; unversioned /api is an alias for v1
+  current_version: '1 (x-api-version); OpenAPI info.version 1.1.0; MCP serverInfo.version 1.0.0'
+  spec_url: https://canfly.ai/api/openapi.json
+  base_url: https://canfly.ai/api
+  policy_published: true
+  policy_statement: >-
+    Verbatim from the OpenAPI info.description: "Unversioned /api is v1. Breaking changes ship under
+    /api/v2 with Deprecation and Sunset headers; v1 remains at least 180 days." The developers page
+    repeats it: "unversioned /api is v1. Breaking changes will ship under /api/v2 and send Deprecation and
+    Sunset headers on the old routes for at least 180 days." The API index (GET /api) carries a
+    deprecation_policy field with the same text.
+  live_check:
+    - {url: 'https://canfly.ai/api/v1/openapi.json', status: 200, note: byte-identical to /api/openapi.json (242,701 bytes)}
+    - {url: 'https://canfly.ai/api/v1/community/agents', status: 200, note: same rate-limit headers as the unversioned route; no Deprecation or Sunset header (nothing is deprecated yet)}
+    - {url: 'https://canfly.ai/api/v2/', probed: false, note: 'v2 is announced as the future home of breaking changes; not probed because the policy says it does not exist yet'}
+deprecation:
+  policy_published: true
+  policy_url: https://canfly.ai/developers
+  sunset_header: true
+  deprecation_header: true
+  rfc8594: true
+  overlap: at least 180 days after Sunset (v1 remains available)
+  deprecated_operations: []
+  note: >-
+    Zero operations carry deprecated: true and no route sends Deprecation/Sunset today; the headers are a
+    stated commitment for the v1 -> v2 transition (OpenAPI x-versioning.deprecation: "Deprecation and
+    Sunset response headers, documented 180-day overlap"). Deprecation pointer emitted on the strength of
+    a published, contract-embedded policy.
+status_page:
+  url: null
+  probed:
+  - {url: 'https://status.canfly.ai/', status: 200, note: wildcard DNS — serves the marketing SPA shell, not a status page}
+  - {url: 'https://canfly.ai/status', status: 404}
+  live_signal:
+    url: https://canfly.ai/api/community/health
+    status: 200
+    observed: '{"ok":true,"tables":[...30 D1 tables...]}'
+    note: A database health probe named in the API index; not an incident/status page. No StatusPage pointer.
+sla:
+  url: null
+  public_uptime_target: null
+  per_skill_sla: >-
+    Each purchasable skill states a delivery SLA in its OpenAPI operation description ("(SLA: 5 minutes)",
+    "(SLA: 30 minutes)", "(SLA: 12 hours)") and in the seller's skill schema (sla: "30m"); on-chain the
+    buyer sets slaDeadline at escrow deposit and the TaskEscrow contract refunds after it if the seller has
+    not completed. That is a per-task delivery deadline, not a platform availability SLA.
+changelog:
+  url: null
+  note: No dated changelog page (/changelog 404, no CHANGELOG.md); see changelog/canfly-ai-changelog.yml.

@@ -1,0 +1,44 @@
+generated: '2026-09-19'
+method: probed
+source: live probes of /.well-known/ on every host the record knows
+summary: >-
+  Two real documents are served on the apex host: an OpenAI-style /.well-known/ai-plugin.json (auth none,
+  api.type openapi pointing at https://canfly.ai/api/openapi.json) and a provider MCP manifest at
+  /.well-known/mcp.json (endpoint https://canfly.ai/mcp, streamable-http, protocol 2025-03-26). Both are
+  application/json and both are checked into the provider's public repo under public/.well-known/. That is
+  a genuine WellKnown hit and the pointer is earned. Nothing else is served: no security.txt (NO SecurityTxt
+  pointer), no api-catalog, no OIDC discovery, no OAuth authorization-server or protected-resource metadata,
+  and no A2A card at either well-known path.
+pointer_basis: WellKnown pointer emitted on the strength of the two application/json 200s on canfly.ai. SecurityTxt NOT emitted.
+false_positive_watch: >-
+  canfly.ai is a Cloudflare Pages SPA with a catch-all: every unknown path — including every unserved
+  /.well-known/* path — answers HTTP 200 text/html with the same 6,668-byte marketing shell (www.canfly.ai
+  serves a 6,439-byte variant of the same). A genuine 404 exists (779-byte text/html body, status 404, e.g.
+  /openapi.yaml, /changelog) but the /.well-known/ prefix is routed to the SPA, not to the 404. Every
+  text/html 200 below is therefore a MISS. The domain also has a wildcard DNS record: api., docs., mcp.,
+  app. and status.canfly.ai all resolve and serve the same shell; none is a distinct host.
+hosts:
+- host: https://canfly.ai
+  role: registrable domain; also the OpenAPI servers[] host, the API base, the MCP host and the agent-card host
+  documents:
+  - {path: /.well-known/ai-plugin.json, status: 200, content_type: application/json, file: canfly-ai-ai-plugin.json, bytes: 675}
+  - {path: /.well-known/mcp.json, status: 200, content_type: application/json, file: canfly-ai-mcp.json, note: provider MCP manifest (non-IETF path, named by llms.txt and robots.txt)}
+  - {path: /.well-known/security.txt, status: 200, content_type: text/html, served: false, note: SPA shell 6668 bytes — miss}
+  - {path: /.well-known/openid-configuration, status: 200, content_type: text/html, served: false, note: SPA shell — miss}
+  - {path: /.well-known/oauth-authorization-server, status: 200, content_type: text/html, served: false, note: SPA shell — miss}
+  - {path: /.well-known/oauth-protected-resource, status: 200, content_type: text/html, served: false, note: SPA shell — miss}
+  - {path: /.well-known/oauth-protected-resource/mcp, status: 200, content_type: text/html, served: false, note: SPA shell — miss (RFC 9728 path-suffixed form for the /mcp resource)}
+  - {path: /.well-known/api-catalog, status: 200, content_type: text/html, served: false, note: SPA shell — miss}
+  - {path: /.well-known/agent-card.json, status: 200, content_type: text/html, served: false, note: SPA shell — miss; see a2a/ for the per-agent cards the platform does serve}
+  - {path: /.well-known/agent.json, status: 200, content_type: text/html, served: false, note: SPA shell — miss}
+- host: https://www.canfly.ai
+  role: www alias (serves the same SPA; does not redirect to the apex)
+  documents:
+  - {path: /.well-known/agent-card.json, status: 200, content_type: text/html, served: false, note: SPA shell 6439 bytes — miss}
+  - {path: /.well-known/agent.json, status: 200, content_type: text/html, served: false, note: SPA shell — miss}
+  note: Not probed for the remaining paths — the host is a byte-for-byte alias of the apex SPA and has no separate origin.
+other_machine_readable_roots:
+- {url: 'https://canfly.ai/robots.txt', status: 200, content_type: text/plain, note: 'Allows every crawler by name (GPTBot, ClaudeBot, PerplexityBot, CCBot ...) and lists llms.txt, llms-full.txt, the OpenAPI, /mcp and /developers as machine entry points'}
+- {url: 'https://canfly.ai/llms.txt', status: 200, content_type: text/plain, file: llms/canfly-ai-llms.txt}
+- {url: 'https://canfly.ai/sitemap.xml', status: 200, content_type: application/xml}
+- {url: 'https://canfly.ai/api', status: 200, content_type: application/json, note: 'API index naming openapi, mcp, llms, docs, health and the deprecation policy'}

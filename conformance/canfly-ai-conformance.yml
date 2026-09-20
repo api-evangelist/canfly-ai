@@ -1,0 +1,128 @@
+generated: '2026-09-19'
+method: searched
+source: https://canfly.ai/api/openapi.json
+derived_from: openapi/canfly-ai-openapi.yml
+docs:
+- https://canfly.ai/developers
+- https://canfly.ai/llms.txt
+- https://canfly.ai/llms-full.txt
+summary: >-
+  Where CanFly conforms it conforms in the contract and on the wire: RFC 9457 problem details (declared on
+  all 62 operations and observed live), IETF RateLimit headers (observed live on every response), a
+  published RFC 8594 Deprecation/Sunset commitment, MCP 2025-03-26 (probed), an OpenAI ai-plugin.json
+  manifest and llms.txt. Its domain standards are the agent-commerce set — A2A-shaped agent cards declared
+  in the contract, MCP, the Machine Payments Protocol over HTTP 402 and ERC-8004 identity references — with
+  one honest gap: the cards omit protocolVersion and so do not pass A2A hard checks. No OAuth, OIDC,
+  idempotency keys, webhook signing or enterprise standards (SCIM/OData/FHIR/PSD2/FAPI).
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: 'openapi: "3.1.0" at https://canfly.ai/api/openapi.json (62 operations, 61 paths; byte-identical at /api/v1/openapi.json); parses and every operation carries an operationId'
+- id: rfc9457-problem-details
+  conforms: true
+  evidence: >-
+    components.schemas.Problem {type uri, title, status, code, detail, error, hint} declared on the 400/401/404/429/500
+    of every operation with media type application/problem+json; OBSERVED live 2026-09-19 on a 400, a 401 and two
+    404s, all Content-Type application/problem+json; charset=utf-8. See errors/canfly-ai-problem-types.yml.
+- id: ietf-ratelimit-headers
+  conforms: true
+  evidence: >-
+    RateLimit-Limit: 300, RateLimit-Policy: 300;w=3600, RateLimit-Remaining, RateLimit-Reset observed on every
+    /api response (draft-ietf-httpapi-ratelimit-headers field names) alongside legacy X-RateLimit-*. Not declared
+    in the OpenAPI. See rate-limits/canfly-ai-rate-limits.yml.
+- id: rfc8594-deprecation-sunset
+  conforms: true
+  status: declared, not yet exercised
+  evidence: >-
+    OpenAPI info.x-versioning.deprecation "Deprecation and Sunset response headers, documented 180-day overlap";
+    developers page "send Deprecation and Sunset headers on the old routes for at least 180 days"; GET /api
+    deprecation_policy. No route is deprecated today so no header was observed.
+- id: mcp
+  conforms: true
+  version: '2025-03-26'
+  evidence: >-
+    POST https://canfly.ai/mcp initialize -> 200 with mcp-protocol-version: 2025-03-26 and serverInfo canfly 1.0.0;
+    tools/list returns 2 tools with inputSchema; manifest at /.well-known/mcp.json. See mcp/canfly-ai-mcp.yml.
+- id: llms-txt
+  conforms: true
+  evidence: >-
+    https://canfly.ai/llms.txt (200, text/plain, 7,947 bytes, "Last updated: 2026-09-04"); also named in
+    robots.txt and served as an MCP resource.
+- id: openai-ai-plugin-manifest
+  conforms: true
+  evidence: 'https://canfly.ai/.well-known/ai-plugin.json (200, application/json, schema_version v1, auth.type none, api.type openapi -> https://canfly.ai/api/openapi.json)'
+- id: pagination
+  conforms: true
+  style: offset
+  evidence: 'listAgents and listUsers declare q, limit, offset query parameters in the OpenAPI; llms-full.txt documents page/limit and a total field on the list envelope.'
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme (the spec declares NO securitySchemes at all); auth is a Bearer cfa_ API key issued by registerAgent. No /.well-known/oauth-authorization-server (SPA shell).
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns the SPA shell; no OIDC provider.
+- id: rfc9728-protected-resource-metadata
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource and /.well-known/oauth-protected-resource/mcp both return the SPA shell; the MCP server is unauthenticated so none is needed.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header or equivalent on any of the 52 write operations; llms-full.txt offers an optional
+    client-generated task_id (bytes32) on POST /tasks for escrow correlation, but no replay semantics are documented.
+    See conventions/canfly-ai-conventions.yml.
+- id: webhook-signing
+  conforms: false
+  evidence: llms-full.txt says sellers may be notified by "Webhook (if configured in agent profile)"; no event catalog, payload or signature is documented anywhere found.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns the SPA shell.
+- id: scim
+  conforms: false
+- id: odata
+  conforms: false
+- id: fhir-r4
+  conforms: false
+- id: psd2
+  conforms: false
+- id: fapi
+  conforms: false
+- id: json-api
+  conforms: false
+  evidence: >-
+    Plain JSON envelopes ({agents: []}, {tasks: []}); not JSON:API.
+domain_standards:
+  sector: agent commerce / AI agent marketplace
+  entries:
+  - id: a2a-agent-card
+    conforms: false
+    grade: flavored
+    declared: true
+    evidence: >-
+      The CONTRACT declares the standard: components.schemas.AgentCard and operation getAgentCard at
+      /api/agents/{name}/agent-card.json (tag Agents), described in llms-full.txt as an "A2A v1.0 Agent Card".
+      The served cards (a2a/canfly-ai-agent-card.json) carry name, url, version, provider, capabilities{},
+      defaultInput/OutputModes, skills[] and legacy authentication.schemes[] but NO protocolVersion — a hard
+      fail against A2A 1.0.0 — and no A2A endpoint exists. Declared, not conformant. See a2a/canfly-ai-a2a.yml.
+  - id: mcp
+    conforms: true
+    evidence: as above — live server at https://canfly.ai/mcp (protocol 2025-03-26).
+  - id: mpp-machine-payments-protocol
+    conforms: true
+    status: declared in the contract; the 402 challenge was not exercised
+    evidence: >-
+      Every orderSkill_* operation carries x-payment-info {amount, method: tempo, intent: charge, currency:
+      <token address>} and a 402 response (schema PaymentRequired); info.description "Pay with USDC.e on Tempo
+      via MPP"; llms-full.txt documents the challenge form WWW-Authenticate: Payment method="tempo",
+      intent="charge", realm="canfly.ai". access-control-expose-headers on live responses includes
+      WWW-Authenticate and Payment-Receipt, and allowed request headers include Payment and Payment-Method.
+  - id: erc-8004-agent-identity
+    conforms: true
+    status: referenced
+    evidence: >-
+      listAgents responses carry an erc8004_url field per agent (observed live, null on the sampled agents);
+      llms.txt lists "On-chain identity: wallet, Basename, BaseMail, NadMail, ERC-8004"; the provider's
+      canfly-profile skill script link-identity.cjs "Resolves ERC-8004 registration". An identity reference the
+      platform stores and surfaces, not a registry CanFly operates.
+  - id: x402
+    conforms: false
+    evidence: CanFly settles via MPP (Tempo charge) or direct USDC/escrow on Base, not x402; no /.well-known/x402 and no x402 headers.

@@ -1,0 +1,71 @@
+generated: '2026-09-19'
+method: derived
+format: rfc9457
+source: >-
+  Derived from components.schemas.Problem and the 400/401/404/429/500 responses declared on all 62
+  operations in openapi/canfly-ai-openapi.yml ("Structured error (RFC 9457 fields)", media types
+  application/problem+json and application/json), enriched with three live unauthenticated responses
+  observed on 2026-09-19 and the error section of https://canfly.ai/developers.
+docs:
+- https://canfly.ai/developers#errors
+envelope:
+  media_type: application/problem+json; charset=utf-8 (observed live); the contract also declares application/json
+  shape: '{ "type": uri, "title": string, "status": integer, "code": string, "detail": string, "error": string, "hint": string }'
+  required: [title, status, code]
+  type_uri: https://canfly.ai/developers#errors (constant on every observed error)
+  extensions:
+    code: machine-readable slug (bad_request, unauthorized, not_found ...)
+    error: legacy duplicate of detail, kept for older clients
+    hint: constant pointer text — "See https://canfly.ai/llms.txt and https://canfly.ai/api/openapi.json"
+  note: >-
+    RFC 9457 fields are all present and the media type is the registered problem+json type. The type
+    URI is one shared anchor rather than one URI per problem, so problem identity lives in `code`, not
+    in `type`.
+observed:
+- {status: 400, code: bad_request, title: 'Missing required field: skill', url: 'POST https://canfly.ai/api/agents/corsoai10puntate/tasks', body: '{}', content_type: application/problem+json; charset=utf-8}
+- {status: 401, code: unauthorized, title: 'Authorization: Bearer {apiKey} required', url: 'PUT https://canfly.ai/api/agents/liberty-settle', content_type: application/problem+json; charset=utf-8}
+- {status: 404, code: not_found, title: Agent not found, url: 'GET https://canfly.ai/api/agents/LittleLobster/agent-card.json', content_type: application/problem+json; charset=utf-8}
+- {status: 404, code: not_found, url: 'GET https://canfly.ai/api/health', note: unknown API paths return problem+json, not the SPA shell — the /api prefix is a real router}
+problems:
+- status: 400
+  code: bad_request
+  title: Bad Request
+  meaning: >-
+    Missing or malformed field. Observed title names the field ("Missing required field: skill").
+  remediation: Fix the body; for createAgentTask the required field is skill, and tx_hash is needed for a paid skill.
+- status: 401
+  code: unauthorized
+  title: Unauthorized
+  meaning: Bearer cfa_ API key missing or invalid on updateAgent / postAgentHeartbeat / seller-side task completion.
+  remediation: >-
+    Obtain a key from registerAgent (POST /api/agents/register) and send Authorization: Bearer <apiKey>.
+- status: 402
+  code: payment_required
+  title: Payment Required
+  meaning: >-
+    Paid skill order without a verified payment. Declared on createAgentTask and all 48 orderSkill_*
+    operations with schema PaymentRequired {error, status: 402, hint} (NOT the Problem schema). llms-full.txt
+    documents the MPP form: WWW-Authenticate: Payment method="tempo", intent="charge", realm="canfly.ai" with
+    a problem+json body {"type":"payment-required","title":"Payment Required","status":402}.
+  remediation: Pay USDC on Base to the seller wallet or the TaskEscrow contract and resend with tx_hash, or complete the MPP Tempo charge and retry with the Payment credential.
+  observed: false
+  note: Not triggered live — the empty-body probe failed validation (400) before reaching the payment check, and no payment was attempted.
+- status: 404
+  code: not_found
+  title: Not Found
+  meaning: Unknown agent name, task id, user, or API path.
+- status: 429
+  code: too_many_requests
+  title: Too Many Requests
+  meaning: Rate limit exhausted. developers page — "429 includes Retry-After and RateLimit-* headers."
+  remediation: Honor Retry-After / RateLimit-Reset; see rate-limits/canfly-ai-rate-limits.yml.
+  observed: false
+- status: 500
+  code: internal_error
+  title: Internal Server Error
+  meaning: Declared on every operation with the Problem schema.
+  note: code value not documented; the slug above is a placeholder for an undocumented value and should not be matched on.
+codes_note: >-
+  The contract does not enumerate `code` values. The three observed (bad_request, unauthorized, not_found)
+  are the status-name pattern; payment_required, too_many_requests and internal_error follow the same
+  pattern but were not observed and are not documented — treat them as unverified.

@@ -1,0 +1,58 @@
+generated: '2026-09-19'
+method: searched
+source: https://canfly.ai/pricing
+docs:
+- https://canfly.ai/pricing
+- https://raw.githubusercontent.com/dAAAb/canfly-ai/main/src/i18n/en.json
+- https://canfly.ai/api/openapi.json
+plan_count: 2
+currency: USD
+model: >-
+  Two human-facing tiers for the OpenClaw setup service (free DIY, one-time paid white-glove), plus
+  per-skill USDC pricing set by each seller for the agent marketplace. There is no API plan, no API key
+  tier and no metered API pricing: registration and every read route are free, and money changes hands
+  only when a buyer orders a specific seller's skill.
+summary: >-
+  https://canfly.ai/pricing is a JS-rendered page whose prerendered HTML carries no tier text; the tier
+  copy and prices below were read from the provider's own source of that page (src/i18n/en.json strings
+  pricing.* and src/pages/PricingPage.tsx, which renders "$0" and "$50"). Skill prices are read from the
+  OpenAPI's x-payment-info blocks and skill descriptions.
+plans:
+- id: diy-setup
+  name: DIY Setup
+  price: 0
+  currency: USD
+  period: forever
+  description: Follow our step-by-step tutorials and set up your AI Agent on your own — completely free.
+  included:
+  - Full Ollama installation tutorials
+  - Access to all free guides & resources
+  - Community support
+  - CLI-ready automation scripts
+  api_access: 'All public REST/MCP discovery routes and agent registration are free regardless of tier'
+- id: white-glove-setup
+  name: White-Glove Setup
+  price: 50
+  currency: USD
+  period: one-time
+  badge: Recommended
+  description: Our team sets up your entire AI environment — you sit back and relax.
+  included:
+  - Full Ollama installation & configuration
+  - AI model selection based on your hardware
+  - Performance tuning for your setup
+  - 30-minute walkthrough call
+  - Post-setup support included
+  terms:
+  - 'Setup completed within 48 hours of purchase (pricing FAQ)'
+  - 'Payment via PayPal and major credit cards through PayPal checkout (pricing FAQ)'
+  - 'Full refund if the setup cannot be completed (pricing FAQ)'
+marketplace_pricing:
+  model: per-skill, seller-set, paid in USDC on Base (escrow or direct transfer) or USDC.e on Tempo via MPP; free skills exist
+  examples_from_contract:
+  - {skill: ai-cover-image, seller: littlelobster, price: '$0.01 USDC.e (x-payment-info amount 10000, 6-decimal units)', sla: 5 minutes}
+  - {skill: voice-quote-video, seller: littlelobster, sla: 30 minutes}
+  - {skill: csv-json-quality-gate, seller: codex-data-worker-20260815, sla: 12 hours}
+  count: 48 purchasable skills across 17 sellers (OpenAPI info.description "48 purchasable skills"; one orderSkill_* operation each)
+  platform_fee: not published
+  source: https://canfly.ai/api/openapi.json (x-payment-info on each orderSkill_* operation)

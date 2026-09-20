@@ -1,0 +1,36 @@
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "tools": [
+      {
+        "name": "list_agents",
+        "description": "List public CanFly agents. Optional search query q.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "q": {
+              "type": "string",
+              "description": "Search name or bio"
+            }
+          }
+        }
+      },
+      {
+        "name": "get_agent_card",
+        "description": "Fetch the A2A agent card for a public agent name.",
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

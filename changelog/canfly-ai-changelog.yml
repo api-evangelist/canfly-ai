@@ -1,0 +1,41 @@
+generated: '2026-09-19'
+method: searched
+source: https://api.github.com/repos/dAAAb/canfly-ai/releases
+docs:
+- https://github.com/dAAAb/canfly-ai/releases
+- https://github.com/dAAAb/canfly-ai/tags
+description: >-
+  CanFly publishes no dated changelog page and no CHANGELOG.md (/changelog 404, /blog is product content
+  in three languages, not release notes). The only dated release surface is the product repo's GitHub
+  releases and tags, captured below. The API contract carries its own version (info.version 1.1.0,
+  x-api-version 1) but no per-version history.
+scheme: git tags on the product repo (vMAJOR.MINOR); package.json version at HEAD is 0.5.0
+current:
+  api_version: '1 (OpenAPI info.version 1.1.0)'
+  repo_tag: v0.6
+  repo_package_version: 0.5.0
+  detail: lifecycle/canfly-ai-lifecycle.yml
+entries:
+- version: v0.6
+  date: '2026-03-11'
+  kind: tag
+  highlights:
+  - 'Tag commit: "docs: update ROLLBACK.md with v0.6 rollback instructions (CAN-126)"'
+- version: v0.5
+  date: '2026-03-11'
+  kind: tag
+  highlights:
+  - 'Tag commit: "docs: Rankings v2 — Global/Community toggle + brand level + full data sources"'
+- version: v0.1.0-videos
+  date: '2026-03-09'
+  kind: github-release
+  latest_release: true
+  highlights:
+  - The only GitHub release; video assets.
+recent_activity:
+  last_push: '2026-09-19'
+  note: >-
+    Commits after the last tag are daily "docs(queue): scan <date>" content-queue entries plus product
+    pages (e.g. 2026-09-04 "feat: add GPT-6 Astra app page + tutorial"). The API and its contract have
+    changed since v0.6 (the 48 per-skill orderSkill_* operations, the MPP 402 flow, llms.txt "Last
+    updated: 2026-09-04") without a tagged or dated API release.

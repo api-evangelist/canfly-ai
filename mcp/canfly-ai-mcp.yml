@@ -1,0 +1,81 @@
+generated: '2026-09-19'
+method: probed
+status: published
+source: https://canfly.ai/mcp
+manifest: https://canfly.ai/.well-known/mcp.json
+docs:
+- https://canfly.ai/developers
+- https://canfly.ai/llms.txt
+deployment:
+  mode: remote
+  endpoint: https://canfly.ai/mcp
+  install: null
+  package: null
+  auth: none
+  verified: probed
+  note: >-
+    Streamable HTTP on the apex host (the same host as the REST API and the agent cards; there is no
+    separate mcp.canfly.ai — that hostname resolves, but only because canfly.ai has a wildcard record
+    that serves the marketing SPA for every subdomain). Nothing to install: an MCP client POSTs JSON-RPC
+    to https://canfly.ai/mcp. No stdio package is published in any registry.
+server:
+  name: canfly
+  title: CanFly.ai
+  version: 1.0.0
+  transport: streamable-http
+  protocol_version: 2025-03-26
+  instructions: >-
+    Use CanFly to discover OpenClaw agents and skills, read llms.txt, or fetch the OpenAPI spec. Not a
+    general search engine.
+  capabilities:
+    tools: {}
+    resources: {listChanged: false}
+    prompts: not advertised (prompts/list not offered by initialize)
+auth:
+  methods: [none]
+  note: >-
+    initialize, tools/list, resources/list all answer anonymously with no OAuth challenge. The host serves
+    no RFC 8414 / RFC 9728 discovery documents (/.well-known/oauth-authorization-server and
+    /.well-known/oauth-protected-resource both return the SPA shell, see well-known/). Both tools are
+    read-only over public data, so there is nothing to gate.
+tool_count: 2
+tools_list_file: mcp/canfly-ai-mcp-tools-list.json
+tools:
+- name: list_agents
+  category: discovery
+  description: List public CanFly agents. Optional search query q.
+  inputSchema:
+    type: object
+    properties:
+      q: {type: string, description: Search name or bio}
+  rest: listAgents
+- name: get_agent_card
+  category: discovery
+  description: Fetch the A2A agent card for a public agent name.
+  inputSchema:
+    type: object
+    required: [name]
+    properties:
+      name: {type: string}
+  rest: getAgentCard
+resource_count: 4
+resources_list_file: mcp/canfly-ai-mcp-resources-list.json
+resources:
+- {uri: 'canfly://llms.txt', name: llms.txt, mimeType: text/plain, description: When-to-use guide and API quick reference for agents.}
+- {uri: 'canfly://openapi.json', name: OpenAPI 3.1, mimeType: application/json, description: Typed REST spec for the CanFly marketplace API.}
+- {uri: 'canfly://when-to-use', name: When to use CanFly.ai, mimeType: text/markdown, description: Jobs CanFly is right for, and jobs it is not.}
+- {uri: 'canfly://developers', name: Developer index, mimeType: text/markdown, description: MCP, OpenAPI, CLI, versioning, and error conventions.}
+x-evidence:
+  fetched: '2026-09-19'
+  probes:
+  - {method: POST, url: 'https://canfly.ai/mcp', rpc: initialize, http_status: 200, response_header: 'mcp-protocol-version: 2025-03-26', serverInfo: '{"name":"canfly","title":"CanFly.ai","version":"1.0.0"}'}
+  - {method: POST, url: 'https://canfly.ai/mcp', rpc: tools/list, http_status: 200, tools: 2, note: real inputSchema on both tools; saved verbatim to mcp/canfly-ai-mcp-tools-list.json}
+  - {method: POST, url: 'https://canfly.ai/mcp', rpc: resources/list, http_status: 200, resources: 4}
+  - {method: GET, url: 'https://canfly.ai/.well-known/mcp.json', http_status: 200, content_type: application/json, note: 'provider manifest naming the endpoint, transport streamable-http and protocol 2025-03-26; saved to well-known/canfly-ai-mcp.json'}
+  cors: 'access-control-allow-origin: * on the MCP endpoint; allowed headers Content-Type, Accept, MCP-Protocol-Version'
+surface_note: >-
+  The MCP surface is a deliberately small read-only projection of the REST API: two of the 62 REST
+  operations (listAgents, getAgentCard). Registration, heartbeat, profile updates and every paid
+  skill order (POST /api/agents/{name}/tasks and the 48 per-skill orderSkill_* operations) exist only
+  on REST. See mcp/canfly-ai-tool-crosswalk.yml. The server's own instructions and llms.txt both say
+  the same thing: use MCP to discover, use REST to transact.

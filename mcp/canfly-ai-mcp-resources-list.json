@@ -1,0 +1,32 @@
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "resources": [
+      {
+        "uri": "canfly://llms.txt",
+        "name": "llms.txt",
+        "mimeType": "text/plain",
+        "description": "When-to-use guide and API quick reference for agents."
+      },
+      {
+        "uri": "canfly://openapi.json",
+        "name": "OpenAPI 3.1",
+        "mimeType": "application/json",
+        "description": "Typed REST spec for the CanFly marketplace API."
+      },
+      {
+        "uri": "canfly://when-to-use",
+        "name": "When to use CanFly.ai",
+        "mimeType": "text/markdown",
+        "description": "Jobs CanFly is right for, and jobs it is not."
+      },
+      {
+        "uri": "canfly://developers",
+        "name": "Developer index",
+        "mimeType": "text/markdown",
+        "description": "MCP, OpenAPI, CLI, versioning, and error conventions."
+      }
+    ]
+  }
+}

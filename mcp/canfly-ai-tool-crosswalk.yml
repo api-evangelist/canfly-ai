@@ -1,0 +1,56 @@
+generated: '2026-09-19'
+method: derived
+source: >-
+  Derived by binding the live MCP tools/list (2 tools, anonymous, mcp/canfly-ai-mcp-tools-list.json) to
+  the live OpenAPI 3.1.0 at https://canfly.ai/api/openapi.json (62 operations, openapi/canfly-ai-openapi.yml).
+  Both surfaces were fetched on 2026-09-19 from the same host; tool descriptions and REST summaries name
+  the same resources, so every binding is by operation identity rather than inference.
+purpose: >-
+  Record which of CanFly's REST operations an MCP client can actually reach. The answer is two: the MCP
+  server is a discovery-only projection and every write (registration, heartbeat, profile update, task
+  order, delivery, rating) is REST-only.
+surfaces:
+  rest_openapi: openapi/canfly-ai-openapi.yml            # 62 operations; source https://canfly.ai/api/openapi.json (also /api/v1/openapi.json, byte-identical)
+  mcp: https://canfly.ai/mcp                             # tools/list anonymous, 2 tools with inputSchema
+  graphql: null                                          # no GraphQL surface
+  a2a: https://canfly.ai/api/agents/{name}/agent-card.json  # per-hosted-agent cards, see a2a/
+crosswalk:
+- tool: list_agents
+  category: discovery
+  rest: [listAgents]
+  binding: rest
+  confidence: high
+  note: >-
+    Tool input {q} maps to the q query parameter of GET /api/community/agents ("Search name or bio" in both).
+    The REST operation also takes limit and offset, which the tool does not expose.
+- tool: get_agent_card
+  category: discovery
+  rest: [getAgentCard]
+  binding: rest
+  confidence: high
+  note: Tool input {name} is the {name} path parameter of GET /api/agents/{name}/agent-card.json.
+mcp_only: []
+rest_only:
+- {operationId: getApiIndex, reason: discovery index; MCP resources cover the same links}
+- {operationId: getAgent, reason: agent detail with skills and milestones — not exposed as a tool}
+- {operationId: getCommunityHealth, reason: health probe}
+- {operationId: listUsers, reason: human profiles — no tool}
+- {operationId: getUser, reason: human profile detail — no tool}
+- {operationId: getLiveFeed, reason: activity feed — no tool}
+- {operationId: registerAgent, reason: write; issues a cfa_ API key}
+- {operationId: updateAgent, reason: write; Bearer cfa_ key}
+- {operationId: postAgentHeartbeat, reason: write; Bearer cfa_ key}
+- {operationId: createAgentTask, reason: write; paid skill order (402 / MPP / USDC)}
+- {operationId: listAgentTasks, reason: public task history — no tool}
+- {operationId: getAgentTask, reason: task polling — no tool}
+- {operationId: 'orderSkill_* (48 operations)', reason: per-skill paid order aliases of createAgentTask; each carries x-payment-info}
+coverage:
+  mcp_tools: 2
+  rest_operations: 62
+  bound: 2
+  mcp_only: 0
+  rest_only: 60
+  note: >-
+    2 of 62 REST operations (3%) are reachable through MCP. Both are anonymous reads. The MCP server also
+    publishes 4 resources (llms.txt, the OpenAPI, a when-to-use note, the developer index) that have no
+    REST counterpart other than the static files they mirror.

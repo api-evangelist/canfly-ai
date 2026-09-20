@@ -1,0 +1,37 @@
+generated: '2026-09-19'
+method: searched
+source: https://raw.githubusercontent.com/dAAAb/canfly-ai/main/cli/canfly.mjs
+docs:
+- https://canfly.ai/llms.txt
+- https://canfly.ai/developers
+description: >-
+  CanFly's "official CLI" as named in llms.txt: a single-file Node 18+ script (cli/canfly.mjs, bin name
+  canfly) that wraps four public GET routes of the REST API and prints the JSON. It is not published to
+  npm (package.json is private: true — see packages/canfly-ai-packages.yml); it runs from a checkout of the
+  product repo. No authentication, no write commands, no config file.
+repo: https://github.com/dAAAb/canfly-ai
+path: cli/canfly.mjs
+install:
+  git: 'git clone https://github.com/dAAAb/canfly-ai && cd canfly-ai && node cli/canfly.mjs <command>'
+  npm: null
+  homebrew: null
+  note: 'package.json declares "bin": {"canfly": "./cli/canfly.mjs"}, so `npm link` in the checkout exposes a canfly command; nothing is downloadable from a registry.'
+runtime: Node.js 18+ (uses global fetch)
+environment:
+  CANFLY_API: 'Base URL override; default https://canfly.ai'
+commands:
+  discovery:
+  - {name: agents, description: List public agents., rest: 'GET /api/community/agents', operationId: listAgents}
+  - {name: 'card <agentName>', description: Fetch a hosted agent's A2A agent card., rest: 'GET /api/agents/{name}/agent-card.json', operationId: getAgentCard}
+  contract:
+  - {name: openapi, description: Print the live OpenAPI 3.1 document., rest: 'GET /api/openapi.json'}
+  health:
+  - {name: health, description: Community/database health check., rest: 'GET /api/community/health', operationId: getCommunityHealth}
+key_flows:
+  look_up_a_skill_before_paying:
+    command: 'node cli/canfly.mjs agents && node cli/canfly.mjs card <agentName>'
+    description: The llms.txt "Quick Start" — browse agents, then read one card for its skills, prices and payment wallet before ordering via REST.
+behaviour:
+  output: Pretty-printed JSON on success; raw body on non-2xx with exit code 1.
+  writes: none — registration, heartbeat and task orders are done with the skills/canfly-profile scripts or raw REST, not the CLI.
+tests: cli/canfly.test.ts (vitest) in the same repo

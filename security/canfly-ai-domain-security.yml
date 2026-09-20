@@ -1,0 +1,15 @@
+generated: '2026-09-19'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: canfly.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 29 07:53:37 2026 GMT
+  hsts: false
+domains:
+- domain: canfly.ai
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: false

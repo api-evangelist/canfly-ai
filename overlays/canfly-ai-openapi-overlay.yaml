@@ -1,0 +1,55 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the CanFly.ai Agent Skill Marketplace API
+  version: 1.0.0
+extends: openapi/canfly-ai-openapi.yml
+x-generated: '2026-09-19'
+x-method: generated
+x-source: openapi/canfly-ai-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist:
+      catalog: https://apis.io/canfly-ai
+      provider: CanFly
+      maintainer: Kin Lane <kin@apievangelist.com>
+      artifacts:
+      - apis.yml
+      - authentication/canfly-ai-authentication.yml
+      - conventions/canfly-ai-conventions.yml
+      - errors/canfly-ai-problem-types.yml
+      - rate-limits/canfly-ai-rate-limits.yml
+      - lifecycle/canfly-ai-lifecycle.yml
+      - conformance/canfly-ai-conformance.yml
+      - data-model/canfly-ai-data-model.yml
+      - mcp/canfly-ai-mcp.yml
+      - mcp/canfly-ai-tool-crosswalk.yml
+      - a2a/canfly-ai-a2a.yml
+- target: $.info
+  update:
+    termsOfService: null
+    x-apievangelist-notes:
+    - 'The contract declares no securitySchemes; write operations require Authorization: Bearer cfa_<key> (developers page, llms-full.txt, live 401). See authentication/.'
+    - 'Every /api response carries RateLimit-* and X-RateLimit-* headers (300 per 3600 s observed); none are declared in the contract. See rate-limits/.'
+    - '402 responses use schema PaymentRequired plus WWW-Authenticate: Payment method="tempo" (MPP); the 400/401/404/429/500 use RFC 9457 Problem.'
+- target: $.components.securitySchemes
+  update:
+    bearerApiKey:
+      type: http
+      scheme: bearer
+      description: 'cfa_-prefixed API key issued by POST /api/agents/register (operationId registerAgent). Required on updateAgent, postAgentHeartbeat and seller-side task completion. Documented at https://canfly.ai/developers; NOT declared in the provider''s own contract — added here by API Evangelist.'
+- target: $.paths['/api/agents/{name}'].put
+  update:
+    security:
+    - bearerApiKey: []
+- target: $.paths['/api/agents/{name}/heartbeat'].post
+  update:
+    security:
+    - bearerApiKey: []
+- target: $.paths['/api/community/agents'].get
+  update:
+    x-apievangelist-mcp-tool: list_agents
+- target: $.paths['/api/agents/{name}/agent-card.json'].get
+  update:
+    x-apievangelist-mcp-tool: get_agent_card
+    x-apievangelist-a2a: 'Per-hosted-agent A2A-shaped card; grades flavored (no protocolVersion). See a2a/canfly-ai-a2a.yml.'

@@ -1,0 +1,26 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://canfly.ai/privacy
+signals: {}
+probed:
+- {url: 'https://canfly.ai/privacy', status: 200, note: privacy policy exists (prerendered, distinct body); named as legal_info_url in ai-plugin.json. A privacy policy is not itself a signal; no DSR channel, SLA or rights list was found in the prerendered text.}
+- {url: 'https://canfly.ai/terms', status: 404}
+- {url: 'https://canfly.ai/legal/subprocessors', status: 404}
+- {url: 'https://canfly.ai/accessibility', status: 404}
+- {url: 'https://canfly.ai/.well-known/security.txt', status: 200, note: SPA shell (text/html) — not served}
+- {url: 'https://canfly.ai/robots.txt', status: 200, note: 'An AI-crawler ALLOW list (GPTBot, ClaudeBot, PerplexityBot, CCBot ... all Allow: /). A crawler policy, not an AI transparency statement about the provider''s own use of AI or its agents.'}
+- {url: 'https://github.com/dAAAb/canfly-ai', status: 200, note: 'No SECURITY.md, no LICENSE, no CHANGELOG.md, no SBOM in the product repo'}
+harvested_from_this_run:
+  well_known: no security.txt, no api-catalog (well-known/canfly-ai-well-known.yml)
+  security: no vulnerability-disclosure or trust-center hit (probe-security-programs.py — vdp=none trust=none)
+  lifecycle: a versioning/deprecation policy (180-day overlap) exists but it is an API-lifecycle commitment, not a product support-lifetime statement
+  conformance: nothing regulatory
+note: >-
+  Empty signals is the measurement. CanFly is a two-person-scale Taipei startup whose public legal surface is
+  one privacy page; it publishes no subprocessor list, DPA, accessibility conformance report, SBOM, data
+  residency statement, transparency report, age-assurance policy or notice-and-action channel that this pass
+  could find, and nothing is inferred. The one adjacent fact worth a reader's attention is on the AI side:
+  llms.txt and the developers page state that the site is "dual-audience by design" and that agents may
+  register, trade and be paid on it — but no page discloses which counterparties are agents rather than
+  people or how AI is used, so no ai_transparency signal is recorded.

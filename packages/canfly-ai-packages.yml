@@ -1,0 +1,44 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  Registry lookups on 2026-09-19 — registry.npmjs.org/canfly, /canfly-ai, /@canfly/cli (all 404 "Not found"),
+  pypi.org/pypi/canfly/json (404) — plus the provider's llms.txt ("Official CLI: canfly (cli/canfly.mjs in
+  https://github.com/dAAAb/canfly-ai)") and the repo's package.json.
+summary:
+  first_party_sdk_count: 0
+  first_party_cli_source_only: 1
+  third_party_package_count: 0
+  note: >-
+    CanFly publishes NO client library or CLI in any package registry. The "official CLI" named in llms.txt
+    is a 60-line Node script committed to the product repo (cli/canfly.mjs) and exposed as bin "canfly" by a
+    package.json that is marked "private": true and has never been published — so there is no registry
+    version or release date to read, and a consumer can only run it from a git checkout. Because nothing is
+    published, this repo emits NO SDKs pointer; the CLI surface itself is described in cli/canfly-ai-cli.yml.
+github_organization:
+  found: false
+  note: >-
+    The product lives under a personal GitHub account (github.com/dAAAb/canfly-ai, 1 star, TypeScript,
+    pushed 2026-09-19), not an organization. Wired as GitHubRepository, not GitHubOrganization.
+packages: []
+source_only_tools:
+- language: javascript
+  registry: none
+  name: canfly
+  kind: cli
+  official: true
+  version: null
+  published: null
+  repository: https://github.com/dAAAb/canfly-ai
+  path: cli/canfly.mjs
+  install: 'git clone https://github.com/dAAAb/canfly-ai && node cli/canfly.mjs <command>'
+  repo_package_version: 0.5.0
+  note: >-
+    version is null because the package is unpublished (package.json "private": true; npm 404). The
+    repo_package_version above is the package.json version field at HEAD on 2026-09-19 — a source
+    revision marker, not a release. Last repo push 2026-09-19; git tags v0.5 and v0.6 are both dated
+    2026-03-11 and the single GitHub release (v0.1.0-videos) is from 2026-03-09.
+  source: https://raw.githubusercontent.com/dAAAb/canfly-ai/main/package.json
+registries_checked:
+- {registry: npm, names: [canfly, canfly-ai, '@canfly/cli'], result: 404}
+- {registry: pypi, names: [canfly], result: 404}
+- {registry: 'rubygems / crates.io / nuget / maven / pkg.go.dev', result: not searched — the provider names no library and the product is TypeScript-only}

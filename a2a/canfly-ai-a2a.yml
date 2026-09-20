@@ -1,0 +1,110 @@
+generated: '2026-09-19'
+method: probed
+source: https://canfly.ai/api/agents/corsoai10puntate/agent-card.json
+card:
+  file: a2a/canfly-ai-agent-card.json
+discovery:
+  path: /api/agents/{name}/agent-card.json
+  canonical: false
+  host: canfly.ai
+  note: >-
+    CanFly is an A2A card OPERATOR, not an A2A agent. It serves one card per hosted marketplace agent at
+    /api/agents/{name}/agent-card.json (a documented, contract-declared operation: getAgentCard in
+    openapi/canfly-ai-openapi.yml; the MCP tool get_agent_card returns the same document). There is NO
+    platform card at either well-known path: /.well-known/agent-card.json and /.well-known/agent.json
+    both answer HTTP 200 with the 6,668-byte marketing SPA shell (text/html), the same body every unknown
+    /.well-known/* path gets, so those are misses, not hits (see well-known/canfly-ai-well-known.yml).
+    The card saved here is the one a2aregistry.org lists under author "CanFly" (agent corsoai10puntate),
+    which is how the provider entered the harvest backlog; it was fetched directly from canfly.ai.
+    Every card the platform serves carries provider.organization "CanFly" / provider.url https://canfly.ai
+    and the identical _extensions.commerce block (Base chainId 8453, USDC and TaskEscrow contract
+    addresses), so the platform-level shape below holds for the whole fleet, while the name, description,
+    skills and wallet describe the hosted third-party agent.
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://canfly.ai/api/agents/corsoai10puntate/agent-card.json
+  http_status: 200
+  content_type: application/json; charset=utf-8
+  body_bytes: 2586
+  body_parses_as: JSON object with AgentCard shape (name, description, url, version, provider, capabilities, defaultInputModes, defaultOutputModes, skills, authentication)
+  corroborating_probes:
+  - {url: 'https://canfly.ai/api/agents/liberty-settle/agent-card.json', http_status: 200, content_type: application/json, note: second hosted agent; identical platform shape and _extensions.commerce block}
+  - {url: 'https://canfly.ai/api/agents/LittleLobster/agent-card.json', http_status: 404, content_type: application/problem+json, note: 'a real RFC 9457 404 ({"title":"Agent not found","status":404,"code":"not_found"}) — the card route is a live handler with a genuine negative, not a catch-all'}
+  - {url: 'https://canfly.ai/.well-known/agent-card.json', http_status: 200, content_type: text/html, note: SPA shell, 6668 bytes — miss}
+  - {url: 'https://canfly.ai/.well-known/agent.json', http_status: 200, content_type: text/html, note: SPA shell — miss}
+  - {url: 'https://www.canfly.ai/.well-known/agent-card.json', http_status: 200, content_type: text/html, note: SPA shell — miss}
+  - {url: 'https://canfly.ai/api/community/agents', http_status: 200, note: 20 public agents listed; each name resolves to a card at the path above}
+  - {url: 'https://a2aregistry.org', note: 'Lists 1 agent under author CanFly (corsoai10puntate) with agent_card pointing at the URL above (fetched 2026-09-19, 415 agents). The registry was the lead; the card was fetched from the provider host.'}
+agent_card:
+  name: corsoai10puntate
+  description: Corso pratico di intelligenza artificiale in italiano in 10 puntate. Prima puntata gratis, corso completo a 9,90 euro.
+  url: https://canfly.ai/free/agent/corsoai10puntate
+  version: 1.0.0
+  protocol_version: null
+  preferred_transport: null
+  provider: {organization: CanFly, url: 'https://canfly.ai'}
+  capabilities: {streaming: false, pushNotifications: false}
+  default_input_modes: [text/plain]
+  default_output_modes: [text/plain]
+  authentication: {schemes: [none]}
+  security_schemes: null
+  skill_count: 2
+  skills:
+  - {id: '421', name: Corso AI in 10 puntate, type: free, url: 'https://www.corso-intelligenza-artificiale.com/'}
+  - {id: '422', name: Puntata 1 gratis, type: free, url: 'https://www.corso-intelligenza-artificiale.com/chapters/puntata-1-perche-adesso'}
+  extensions:
+    _extensions.commerce: {chain: base, chainId: 8453, usdc_contract: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', escrow_contract: '0x6e44489c33eB6e66cC814569459De7B9BDb0176d', flow: 'escrow-first: approve USDC → deposit() → POST /tasks with tx_hash', payment_wallet: null}
+    _extensions.heartbeat: {status: 'off', lastSeen: null}
+conformance:
+  spec: A2A 1.0.0
+  grade: flavored
+  protocol_version: null
+  preferred_transport: null
+  hard_checks:
+    capabilities_is_object: true
+    protocol_version_present: false
+    skills_is_array: true
+  optional_fields:
+    default_input_modes: true
+    default_output_modes: true
+    preferred_transport: false
+  grade_basis: >-
+    capabilities is an object (pass) and skills is an array (pass), but protocolVersion is absent at the
+    top level (hard fail), so the card grades flavored. It is shaped like the pre-0.3 Google A2A card
+    (top-level url + authentication.schemes[] + provider) and the platform's own llms-full.txt calls it
+    "A2A v1.0 Agent Card", but it declares no protocol version, no transport, no supportedInterfaces[]
+    and no securitySchemes, and the card's url is the agent's HTML profile page rather than an A2A
+    JSON-RPC endpoint.
+  deviations:
+  - field: protocolVersion
+    observed: absent
+    note: Hard fail against A2A 1.0.0 and 0.3.0 alike; an A2A client cannot tell which revision to speak.
+  - field: url
+    observed: https://canfly.ai/free/agent/corsoai10puntate (text/html profile page)
+    note: >-
+      A2A expects the agent's service endpoint. No JSON-RPC A2A endpoint exists on the platform: the
+      actual invocation path is the REST operation createAgentTask (POST /api/agents/{name}/tasks),
+      which the card does not reference. The card is a discovery document for a REST/escrow commerce
+      flow, not for an A2A message channel.
+  - field: authentication.schemes
+    observed: '["none"] (legacy field); securitySchemes/security absent'
+    note: The pre-0.3 field name. Payment (USDC on Base via the escrow contract, or MPP over HTTP 402) is the real gate on purchasable skills and is described only in _extensions.commerce.
+  - field: skills[].tags / examples / inputModes
+    observed: tags empty on every skill; no examples, no per-skill modes
+    note: Skills carry id, name, description, url and a non-standard type (free | purchasable).
+  - field: _extensions
+    observed: platform, model, agentbookRegistered, birthday, canflyUrl, heartbeat, milestones, commerce
+    note: >-
+      Non-standard block carrying the commerce contract (chain, USDC and TaskEscrow addresses, deposit
+      ABI, escrow-first flow), liveness and identity — the most useful content in the card for a buyer,
+      and entirely outside the A2A schema.
+  - field: preferredTransport / supportedInterfaces / documentationUrl / iconUrl / signatures
+    observed: absent
+    note: No transport declared, no documentation link (developers page and OpenAPI are not referenced), no JWS signature — authenticity rests on TLS to canfly.ai.
+surface_relationship:
+  note: >-
+    Three agent surfaces on one host, all projections of one marketplace database: REST (62 operations,
+    the only surface that writes or takes payment), MCP (2 read-only discovery tools, see
+    mcp/canfly-ai-mcp.yml), and per-agent A2A-shaped cards (discovery only; no A2A endpoint). The card's
+    skills correspond to the OpenAPI's per-skill orderSkill_* operations for purchasable skills; free
+    skills such as this agent's two link out to the seller's own site.
