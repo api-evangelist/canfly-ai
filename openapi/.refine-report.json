@@ -1,0 +1,27 @@
+{
+  "provider": "canfly-ai",
+  "sources": [
+    "_original/canfly-ai-openapi.json",
+    "canfly-ai-openapi.yml"
+  ],
+  "outputs": [
+    "canfly-ai-agents-api-openapi.yml",
+    "canfly-ai-discovery-api-openapi.yml",
+    "canfly-ai-skills-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/canfly-ai-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "canfly-ai-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "canfly-ai-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "tag 'Agents' spans 2 source specs (canfly-ai-openapi.json, canfly-ai-openapi.yml): per-path servers applied",
+    "tag 'Discovery' spans 2 source specs (canfly-ai-openapi.json, canfly-ai-openapi.yml): per-path servers applied",
+    "tag 'Skills' spans 2 source specs (canfly-ai-openapi.json, canfly-ai-openapi.yml): per-path servers applied",
+    "apis.yml register: written (+3 apis, 5 total)"
+  ],
+  "skipped": []
+}

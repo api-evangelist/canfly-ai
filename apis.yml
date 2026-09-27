@@ -12,6 +12,23 @@ description: >-
   Node CLI in the public product repo. Errors are RFC 9457 problem+json and every response carries IETF
   RateLimit headers.
 url: https://raw.githubusercontent.com/api-evangelist/canfly-ai/refs/heads/main/apis.yml
+deliveryModel:
+  model: unknown
+  license_evidence:
+    repo: daaab/canfly-ai
+    spdx: none
+    stars: 2
+  open_source: unknown
+  commercial: true
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-unlicensed
+  generated: '2026-09-25'
+  method: derived
 image: https://canfly.ai/og-image.webp
 x-type: company
 x-source: harvest:a2a-registry
@@ -29,7 +46,7 @@ tags:
 - MCP
 - USDC
 - OpenClaw
-- agent-native
+- Agent-Native
 - Taiwan
 tags_raw:
 - Agents
@@ -43,58 +60,23 @@ tags_raw:
 - agent-native
 - Taiwan
 apis:
-- aid: canfly-ai:canfly-agent-marketplace-api
-  name: CanFly.ai Agent Skill Marketplace API
-  description: >-
-    Public REST API for OpenClaw agent discovery, registration and USDC skill orders: browse agents and human
-    profiles (anonymous), read a hosted agent's A2A-shaped card, register an agent to obtain a cfa_ Bearer key,
-    update a profile and report heartbeats (Bearer), and order a seller's purchasable skill — POST
-    /api/agents/{name}/tasks plus one orderSkill_* alias per skill carrying x-payment-info — gated by an
-    on-chain USDC payment on Base (escrow or direct) or an MPP Tempo charge answered with HTTP 402. 62
-    operations across 61 paths, OpenAPI 3.1.0, servers[] https://canfly.ai; unversioned /api is v1 and
-    /api/v1 is a byte-identical alias.
-  image: https://canfly.ai/og-image.webp
-  humanURL: https://canfly.ai/developers
-  baseURL: https://canfly.ai/api
-  tags:
-  - Agents
-  - Agentic Commerce
-  - Marketplace
-  - USDC
-  tags_raw:
-  - Agents
-  - Agent Commerce
-  - Marketplace
-  - USDC
-  properties:
-  - type: OpenAPI
-    url: openapi/canfly-ai-openapi.yml
-  - type: OpenAPI
-    name: CanFly.ai OpenAPI 3.1 (provider-hosted)
-    url: https://canfly.ai/api/openapi.json
-  - type: Documentation
-    url: https://canfly.ai/developers
-  - type: APIReference
-    url: https://canfly.ai/api/docs/
-  - type: Overlay
-    url: overlays/canfly-ai-openapi-overlay.yaml
-  - type: ErrorCatalog
-    url: errors/canfly-ai-problem-types.yml
-  - type: DataModel
-    url: data-model/canfly-ai-data-model.yml
 - aid: canfly-ai:canfly-mcp-server
   name: CanFly.ai MCP Server
   description: >-
-    Remote Model Context Protocol server at https://canfly.ai/mcp (Streamable HTTP, protocol version
-    2025-03-26, serverInfo canfly 1.0.0). initialize, tools/list and resources/list answer anonymously with
-    two read-only discovery tools — list_agents (q) and get_agent_card (name), each with a real inputSchema —
-    and four resources (llms.txt, the OpenAPI, a when-to-use note, the developer index). prompts/list is not
-    implemented. No authentication and no OAuth discovery documents; every write and every paid order is
-    REST-only. A provider manifest at /.well-known/mcp.json names the endpoint.
+    Remote Model Context Protocol server at https://canfly.ai/mcp (Streamable HTTP, protocol version 2025-03-26,
+    serverInfo canfly 1.0.0). initialize, tools/list and resources/list answer anonymously with two read-only
+    discovery tools — list_agents (q) and get_agent_card (name), each with a real inputSchema — and four
+    resources (llms.txt, the OpenAPI, a when-to-use note, the developer index). prompts/list is not implemented.
+    No authentication and no OAuth discovery documents; every write and every paid order is REST-only.
+    A provider manifest at /.well-known/mcp.json names the endpoint.
   image: https://canfly.ai/og-image.webp
   humanURL: https://canfly.ai/developers
   baseURL: https://canfly.ai/mcp
   tags:
+  - MCP
+  - Agent-Native
+  - Agents
+  tags_raw:
   - MCP
   - agent-native
   - Agents
@@ -109,20 +91,20 @@ apis:
 - aid: canfly-ai:canfly-agent-cards
   name: CanFly.ai Hosted Agent Cards (A2A)
   description: >-
-    Per-agent A2A-shaped agent cards served from the platform host for every public marketplace agent at
-    https://canfly.ai/api/agents/{name}/agent-card.json (operation getAgentCard; also the MCP tool
+    Per-agent A2A-shaped agent cards served from the platform host for every public marketplace agent
+    at https://canfly.ai/api/agents/{name}/agent-card.json (operation getAgentCard; also the MCP tool
     get_agent_card). Each card carries provider {organization CanFly, url https://canfly.ai}, capabilities{},
     defaultInput/OutputModes, skills[] with type free | purchasable and price, legacy authentication.schemes[],
-    and an _extensions.commerce block naming the Base chain, USDC and TaskEscrow contract addresses and the
-    escrow-first flow. The cards declare no protocolVersion and no A2A endpoint — CanFly is a card operator
-    whose invocation path is the REST task API — so they grade flavored against A2A 1.0.0. No platform card
-    exists at /.well-known/agent-card.json (SPA shell).
+    and an _extensions.commerce block naming the Base chain, USDC and TaskEscrow contract addresses and
+    the escrow-first flow. The cards declare no protocolVersion and no A2A endpoint — CanFly is a card
+    operator whose invocation path is the REST task API — so they grade flavored against A2A 1.0.0. No
+    platform card exists at /.well-known/agent-card.json (SPA shell).
   image: https://canfly.ai/og-image.webp
   humanURL: https://canfly.ai/llms.txt
   baseURL: https://canfly.ai/api/agents
   tags:
   - A2A
-  - agent-native
+  - Agent-Native
   - Agentic Commerce
   tags_raw:
   - A2A
@@ -134,12 +116,68 @@ apis:
   - type: AgentCard
     name: Agent card as served (corsoai10puntate — the agent a2aregistry.org lists under CanFly)
     url: https://canfly.ai/api/agents/corsoai10puntate/agent-card.json
+- aid: canfly-ai:canfly-ai-agents-api
+  name: CanFly Agents API
+  description: Registration and cards
+  humanURL: https://canfly.ai/developers
+  baseURL: https://canfly.ai/api
+  tags:
+  - Agents
+  properties:
+  - type: OpenAPI
+    url: openapi/canfly-ai-agents-api-openapi.yml
+  - type: Documentation
+    url: https://canfly.ai/developers
+  - type: APIReference
+    url: https://canfly.ai/api/docs/
+  - type: ErrorCatalog
+    url: errors/canfly-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/canfly-ai-data-model.yml
+- aid: canfly-ai:canfly-ai-discovery-api
+  name: CanFly Discovery API
+  description: Public catalog
+  humanURL: https://canfly.ai/developers
+  baseURL: https://canfly.ai/api
+  tags:
+  - Discovery
+  properties:
+  - type: OpenAPI
+    url: openapi/canfly-ai-discovery-api-openapi.yml
+  - type: Documentation
+    url: https://canfly.ai/developers
+  - type: APIReference
+    url: https://canfly.ai/api/docs/
+  - type: ErrorCatalog
+    url: errors/canfly-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/canfly-ai-data-model.yml
+- aid: canfly-ai:canfly-ai-skills-api
+  name: CanFly Skills API
+  description: Purchasable agent skills
+  humanURL: https://canfly.ai/developers
+  baseURL: https://canfly.ai/api
+  tags:
+  - Skills
+  properties:
+  - type: OpenAPI
+    url: openapi/canfly-ai-skills-api-openapi.yml
+  - type: Documentation
+    url: https://canfly.ai/developers
+  - type: APIReference
+    url: https://canfly.ai/api/docs/
+  - type: ErrorCatalog
+    url: errors/canfly-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/canfly-ai-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/canfly-ai-openapi-overlay.yaml
 - type: Website
   url: https://canfly.ai/
 - type: DeveloperPortal
