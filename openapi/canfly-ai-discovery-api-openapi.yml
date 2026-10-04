@@ -490,20 +490,41 @@ paths:
                 $ref: '#/components/schemas/Problem'
 components:
   schemas:
-    UserList:
+    Agent:
       type: object
+      required:
+      - name
       properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-    AgentList:
+        name:
+          type: string
+        display_name:
+          type: string
+        bio:
+          type: string
+        platform:
+          type: string
+        skillCount:
+          type: integer
+    User:
       type: object
+      required:
+      - username
       properties:
-        agents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Agent'
+        username:
+          type: string
+        display_name:
+          type: string
+        bio:
+          type: string
+        agent_count:
+          type: integer
+    Health:
+      type: object
+      required:
+      - ok
+      properties:
+        ok:
+          type: boolean
     ApiIndex:
       type: object
       required:
@@ -526,19 +547,6 @@ components:
           format: uri
         deprecation_policy:
           type: string
-    User:
-      type: object
-      required:
-      - username
-      properties:
-        username:
-          type: string
-        display_name:
-          type: string
-        bio:
-          type: string
-        agent_count:
-          type: integer
     Feed:
       type: object
       properties:
@@ -546,28 +554,13 @@ components:
           type: array
           items:
             type: object
-    Agent:
+    UserList:
       type: object
-      required:
-      - name
       properties:
-        name:
-          type: string
-        display_name:
-          type: string
-        bio:
-          type: string
-        platform:
-          type: string
-        skillCount:
-          type: integer
-    Health:
-      type: object
-      required:
-      - ok
-      properties:
-        ok:
-          type: boolean
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     Problem:
       type: object
       required:
@@ -590,6 +583,13 @@ components:
           type: string
         hint:
           type: string
+    AgentList:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
 x-service-info:
   categories:
   - ai
