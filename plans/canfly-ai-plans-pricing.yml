@@ -56,3 +56,25 @@ marketplace_pricing:
   count: 48 purchasable skills across 17 sellers (OpenAPI info.description "48 purchasable skills"; one orderSkill_* operation each)
   platform_fee: not published
   source: https://canfly.ai/api/openapi.json (x-payment-info on each orderSkill_* operation)
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - subscription
+  units: []
+  plans:
+  - name: DIY Setup
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: White-Glove Setup
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - one-time

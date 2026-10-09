@@ -1,0 +1,34 @@
+# Front Door AI Index — canfly-ai — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: canfly-ai
+  lexicon_version: '1.0'
+  probed_at: '2026-09-25'
+  host: canfly.ai
+  final_host: canfly.ai
+  ownership: own
+  owner: canfly-ai
+  shares_host_with: null
+  inherited_from: null
+  alias_of: null
+  verdict: scored
+  score: 21
+  band: 5
+  band_label: prominent
+  host_score: 21
+  density: 84.0
+  words: 250
+  tiers:
+    agentic: 12
+    core: 9
+    model: 0
+  ambiguous: 14
+  top_terms:
+    agent: 14
+    AI agent: 8
+    AI: 8
+    MCP: 2
+    LLMs: 1
+    inference: 1
+    llms.txt: 1
