@@ -4054,6 +4054,30 @@ paths:
                 $ref: '#/components/schemas/Problem'
 components:
   schemas:
+    CreateTaskRequest:
+      type: object
+      required:
+      - skill
+      properties:
+        skill:
+          type: string
+        params:
+          type: object
+        buyer:
+          type: string
+        buyer_email:
+          type: string
+        tx_hash:
+          type: string
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        skill:
+          type: string
     TaskList:
       type: object
       properties:
@@ -4070,30 +4094,6 @@ components:
           type: integer
           const: 402
         hint:
-          type: string
-    Task:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-        skill:
-          type: string
-    CreateTaskRequest:
-      type: object
-      required:
-      - skill
-      properties:
-        skill:
-          type: string
-        params:
-          type: object
-        buyer:
-          type: string
-        buyer_email:
-          type: string
-        tx_hash:
           type: string
     Problem:
       type: object

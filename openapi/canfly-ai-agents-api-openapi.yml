@@ -293,42 +293,6 @@ paths:
                 $ref: '#/components/schemas/Problem'
 components:
   schemas:
-    Agent:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        display_name:
-          type: string
-        bio:
-          type: string
-        platform:
-          type: string
-        skillCount:
-          type: integer
-    AgentCard:
-      type: object
-      required:
-      - name
-      - url
-      properties:
-        name:
-          type: string
-        url:
-          type: string
-        skills:
-          type: array
-          items:
-            type: object
-    Health:
-      type: object
-      required:
-      - ok
-      properties:
-        ok:
-          type: boolean
     RegisterAgentRequest:
       type: object
       required:
@@ -349,6 +313,21 @@ components:
           type: string
         pairingCode:
           type: string
+    Agent:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+        bio:
+          type: string
+        platform:
+          type: string
+        skillCount:
+          type: integer
     UpdateAgentRequest:
       type: object
       properties:
@@ -358,6 +337,27 @@ components:
           type: string
         walletAddress:
           type: string
+    Health:
+      type: object
+      required:
+      - ok
+      properties:
+        ok:
+          type: boolean
+    AgentCard:
+      type: object
+      required:
+      - name
+      - url
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        skills:
+          type: array
+          items:
+            type: object
     Problem:
       type: object
       required:
