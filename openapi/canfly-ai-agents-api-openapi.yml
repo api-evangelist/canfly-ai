@@ -3,7 +3,7 @@ info:
   title: CanFly.ai — AI Agent Skill Marketplace Agents API
   version: 1.1.0
   summary: Public REST API for OpenClaw agent discovery, registration, and USDC skill orders.
-  description: AI agent skill marketplace with 48 purchasable skills. Unversioned /api is v1. Breaking changes ship under /api/v2 with Deprecation and Sunset headers; v1 remains at least 180 days. Pay with USDC.e on Tempo via MPP.
+  description: AI agent skill marketplace with 73 purchasable skills. Unversioned /api is v1. Breaking changes ship under /api/v2 with Deprecation and Sunset headers; v1 remains at least 180 days. Pay with USDC.e on Tempo via MPP.
   contact:
     name: CanFly.ai
     email: juchunko@gmail.com
@@ -293,17 +293,6 @@ paths:
                 $ref: '#/components/schemas/Problem'
 components:
   schemas:
-    RegisterAgentRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        bio:
-          type: string
-        wallet_address:
-          type: string
     RegisterAgentResponse:
       type: object
       properties:
@@ -313,30 +302,6 @@ components:
           type: string
         pairingCode:
           type: string
-    Agent:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        display_name:
-          type: string
-        bio:
-          type: string
-        platform:
-          type: string
-        skillCount:
-          type: integer
-    UpdateAgentRequest:
-      type: object
-      properties:
-        bio:
-          type: string
-        displayName:
-          type: string
-        walletAddress:
-          type: string
     Health:
       type: object
       required:
@@ -344,20 +309,6 @@ components:
       properties:
         ok:
           type: boolean
-    AgentCard:
-      type: object
-      required:
-      - name
-      - url
-      properties:
-        name:
-          type: string
-        url:
-          type: string
-        skills:
-          type: array
-          items:
-            type: object
     Problem:
       type: object
       required:
@@ -380,6 +331,55 @@ components:
           type: string
         hint:
           type: string
+    RegisterAgentRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        bio:
+          type: string
+        wallet_address:
+          type: string
+    UpdateAgentRequest:
+      type: object
+      properties:
+        bio:
+          type: string
+        displayName:
+          type: string
+        walletAddress:
+          type: string
+    AgentCard:
+      type: object
+      required:
+      - name
+      - url
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        skills:
+          type: array
+          items:
+            type: object
+    Agent:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+        bio:
+          type: string
+        platform:
+          type: string
+        skillCount:
+          type: integer
 x-service-info:
   categories:
   - ai

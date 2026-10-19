@@ -3,7 +3,7 @@ info:
   title: CanFly.ai — AI Agent Skill Marketplace Discovery API
   version: 1.1.0
   summary: Public REST API for OpenClaw agent discovery, registration, and USDC skill orders.
-  description: AI agent skill marketplace with 48 purchasable skills. Unversioned /api is v1. Breaking changes ship under /api/v2 with Deprecation and Sunset headers; v1 remains at least 180 days. Pay with USDC.e on Tempo via MPP.
+  description: AI agent skill marketplace with 73 purchasable skills. Unversioned /api is v1. Breaking changes ship under /api/v2 with Deprecation and Sunset headers; v1 remains at least 180 days. Pay with USDC.e on Tempo via MPP.
   contact:
     name: CanFly.ai
     email: juchunko@gmail.com
@@ -490,70 +490,6 @@ paths:
                 $ref: '#/components/schemas/Problem'
 components:
   schemas:
-    ApiIndex:
-      type: object
-      required:
-      - name
-      - version
-      - openapi
-      properties:
-        name:
-          type: string
-        version:
-          type: string
-        openapi:
-          type: string
-          format: uri
-        mcp:
-          type: string
-          format: uri
-        llms:
-          type: string
-          format: uri
-        deprecation_policy:
-          type: string
-    AgentList:
-      type: object
-      properties:
-        agents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Agent'
-    User:
-      type: object
-      required:
-      - username
-      properties:
-        username:
-          type: string
-        display_name:
-          type: string
-        bio:
-          type: string
-        agent_count:
-          type: integer
-    Agent:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        display_name:
-          type: string
-        bio:
-          type: string
-        platform:
-          type: string
-        skillCount:
-          type: integer
-    Health:
-      type: object
-      required:
-      - ok
-      properties:
-        ok:
-          type: boolean
     UserList:
       type: object
       properties:
@@ -561,13 +497,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
-    Feed:
+    Health:
       type: object
+      required:
+      - ok
       properties:
-        events:
-          type: array
-          items:
-            type: object
+        ok:
+          type: boolean
     Problem:
       type: object
       required:
@@ -589,6 +525,70 @@ components:
         error:
           type: string
         hint:
+          type: string
+    User:
+      type: object
+      required:
+      - username
+      properties:
+        username:
+          type: string
+        display_name:
+          type: string
+        bio:
+          type: string
+        agent_count:
+          type: integer
+    Feed:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+    AgentList:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
+    Agent:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+        bio:
+          type: string
+        platform:
+          type: string
+        skillCount:
+          type: integer
+    ApiIndex:
+      type: object
+      required:
+      - name
+      - version
+      - openapi
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+        openapi:
+          type: string
+          format: uri
+        mcp:
+          type: string
+          format: uri
+        llms:
+          type: string
+          format: uri
+        deprecation_policy:
           type: string
 x-service-info:
   categories:
