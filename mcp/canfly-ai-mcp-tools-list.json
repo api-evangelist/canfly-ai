@@ -1,6 +1,13 @@
 {
-  "jsonrpc": "2.0",
-  "id": 2,
+  "endpoint": "https://canfly.ai/mcp",
+  "captured": "2026-10-20",
+  "method": "initialize + tools/list (anonymous, no tool called; roadmap#992)",
+  "protocol_version": "2025-03-26",
+  "server_info": {
+    "name": "canfly",
+    "title": "CanFly.ai",
+    "version": "1.0.0"
+  },
   "result": {
     "tools": [
       {
