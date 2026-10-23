@@ -608,3 +608,9 @@ x-service-info:
     apiReference: https://canfly.ai/api/openapi.json
     llms: https://canfly.ai/llms.txt
     mcp: https://canfly.ai/mcp
+x-provenance:
+  method: harvested
+  publisher: CanFly
+  source: https://canfly.ai/api/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
