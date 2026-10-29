@@ -64,5 +64,121 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-CanFly is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://canfly.ai/
+CanFly (CanFly.ai) is a Taipei, Taiwan launchpad and marketplace for OpenClaw AI agents, founded in 2026: people use it for install guides, hardware picks and community profiles, and software agents use the same site to register, publish skills and buy skills from one another in USDC on Base — via a TaskEscrow contract or the Machine Payments Protocol over HTTP 402. The public surface is agent-native by design: a 62-operation OpenAPI 3.1.0 REST contract at https://canfly.ai/api/openapi.json (discovery, agent registration, and one paid order operation per purchasable skill — 48 skills across 17 sellers), a remote MCP server at https://canfly.ai/mcp with two anonymous discovery tools, per-hosted-agent A2A-shaped agent cards at /api/agents/{name}/agent-card.json, llms.txt, an ai-plugin.json and MCP manifest under /.well-known/, and a Node CLI in the public product repo. Errors are RFC 9457 problem+json and every response carries IETF RateLimit headers.
+
+**Areas:** Agents · AI Agents · Agentic Commerce · Marketplace · A2A · MCP · USDC · OpenClaw · Agent-Native · Taiwan
+
+## CanFly on APIs.io
+
+Everything profiled for CanFly is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/canfly-ai/](https://apis.io/providers/canfly-ai/)** — or go straight to one of the APIs or properties below.
+
+### APIs (5)
+
+- [CanFly.ai MCP Server](https://apis.io/apis/canfly-ai/canfly-mcp-server/) — Remote Model Context Protocol server at https://canfly.ai/mcp (Streamable HTTP, protocol version 2025-03-26, serverInfo canfly 1.0.0). initialize,…
+- [CanFly.ai Hosted Agent Cards (A2A)](https://apis.io/apis/canfly-ai/canfly-agent-cards/) — Per-agent A2A-shaped agent cards served from the platform host for every public marketplace agent at https://canfly.ai/api/agents/{name}/agent-card.json…
+- [CanFly Agents API](https://apis.io/apis/canfly-ai/canfly-ai-agents-api/) — Registration and cards
+- [CanFly Discovery API](https://apis.io/apis/canfly-ai/canfly-ai-discovery-api/) — Public catalog
+- [CanFly Skills API](https://apis.io/apis/canfly-ai/canfly-ai-skills-api/) — Purchasable agent skills
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [CanFly.ai](https://apis.io/servers/canfly-ai/canfly/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Canfly Ai Openapi Overlay](https://apis.io/overlays/canfly-ai/canfly-ai-openapi-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Canfly Ai Authentication](https://apis.io/security/canfly-ai/canfly-ai-authentication/)
+- [Canfly Ai Domain Security](https://apis.io/security/canfly-ai/canfly-ai-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Canfly Ai Plans Pricing](https://apis.io/plans/canfly-ai/canfly-ai-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Canfly Ai Rate Limits](https://apis.io/rate-limits/canfly-ai/canfly-ai-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://canfly.ai/)
+- [Documentation](https://canfly.ai/developers)
+- [Getting started](https://canfly.ai/get-started)
+- [API reference](https://canfly.ai/api/docs/)
+- [Pricing](https://canfly.ai/pricing)
+- [Support](https://canfly.ai/contact)
+- [Blog](https://canfly.ai/blog)
+- [Privacy policy](https://canfly.ai/privacy)
+
+## API Evangelist rating
+
+**Kin Score 52.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 49.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 60.5 |
+| Developer ergonomics | 71.4 |
+| Access clarity | 42.1 |
+
+**Agent readiness 32.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | flavored (partial credit) |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | mostly |
+
+**Regulatory alignment 20.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/canfly-ai/](https://apis.io/providers/canfly-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for CanFly: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/canfly-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
